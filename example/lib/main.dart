@@ -108,7 +108,7 @@ class _FirstPageState extends State<FirstPage> {
     "Zest"
   ];
 
-  SimpleAutoCompleteTextField textField;
+  SimpleAutoCompleteTextField? textField;
   bool showWhichErrorText = false;
 
   @override
@@ -119,9 +119,9 @@ class _FirstPageState extends State<FirstPage> {
           trailing: new IconButton(
               icon: new Icon(Icons.add),
               onPressed: () {
-                textField.triggerSubmitted();
+                textField?.triggerSubmitted();
                 showWhichErrorText = !showWhichErrorText;
-                textField.updateDecoration(
+                textField?.updateDecoration(
                     decoration: new InputDecoration(
                         errorText: showWhichErrorText ? "Beans" : "Tomatoes"));
               })),
@@ -151,7 +151,7 @@ class _FirstPageState extends State<FirstPage> {
                                   onPressed: () {
                                     if (text != "") {
                                       suggestions.add(text);
-                                      textField.updateSuggestions(suggestions);
+                                      textField?.updateSuggestions(suggestions);
                                     }
                                     Navigator.pop(context);
                                   },
@@ -167,7 +167,7 @@ class _FirstPageState extends State<FirstPage> {
 class ArbitrarySuggestionType {
   //For the mock data type we will use review (perhaps this could represent a restaurant);
   num stars;
-  String name, imgURL;
+  String name="", imgURL;
 
   ArbitrarySuggestionType(this.stars, this.name, this.imgURL);
 }
@@ -217,12 +217,12 @@ class _SecondPageState extends State<SecondPage> {
         "https://media-cdn.tripadvisor.com/media/photo-s/0e/1f/55/79/and-here-we-go.jpg")
   ];
 
-  GlobalKey key =
+  GlobalKey? key =
       new GlobalKey<AutoCompleteTextFieldState<ArbitrarySuggestionType>>();
 
-  AutoCompleteTextField<ArbitrarySuggestionType> textField;
+  AutoCompleteTextField<ArbitrarySuggestionType>? textField;
 
-  ArbitrarySuggestionType selected;
+  ArbitrarySuggestionType? selected;
 
   _SecondPageState() {
     textField = new AutoCompleteTextField<ArbitrarySuggestionType>(
@@ -236,7 +236,7 @@ class _SecondPageState extends State<SecondPage> {
               title: new Text(suggestion.name),
               trailing: new Text("Stars: ${suggestion.stars}")),
           padding: EdgeInsets.all(8.0)),
-      itemSorter: (a, b) => a.stars == b.stars ? 0 : a.stars > b.stars ? -1 : 1,
+      itemSorter: (a, b) => a.stars == b.stars ? 0 : (a.stars > b.stars) ? -1 : 1,
       itemFilter: (suggestion, input) =>
           suggestion.name.toLowerCase().startsWith(input.toLowerCase()),
     );
@@ -259,11 +259,11 @@ class _SecondPageState extends State<SecondPage> {
                 child: selected != null
                     ? new Column(children: [
                         new ListTile(
-                            title: new Text(selected.name),
-                            trailing: new Text("Rating: ${selected.stars}/5")),
+                            title: new Text("${selected?.name}"),
+                            trailing: new Text("Rating: ${selected?.stars}/5")),
                         new Container(
                             child: new Image(
-                                image: new NetworkImage(selected.imgURL)),
+                                image: new NetworkImage("${selected?.imgURL}")),
                             width: 400.0,
                             height: 300.0)
                       ])
